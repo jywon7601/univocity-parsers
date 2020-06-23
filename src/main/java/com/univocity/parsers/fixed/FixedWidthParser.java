@@ -15,9 +15,13 @@
  ******************************************************************************/
 package com.univocity.parsers.fixed;
 
-import com.univocity.parsers.common.*;
-import com.univocity.parsers.common.input.*;
-import com.univocity.parsers.common.record.*;
+import com.univocity.parsers.common.AbstractParser;
+import com.univocity.parsers.common.NormalizedString;
+import com.univocity.parsers.common.ParsingContext;
+import com.univocity.parsers.common.ParsingContextWrapper;
+import com.univocity.parsers.common.TextParsingException;
+import com.univocity.parsers.common.input.EOFException;
+import com.univocity.parsers.common.input.LookaheadCharInputReader;
 
 /**
  * A fast and flexible fixed-with parser implementation.
@@ -315,6 +319,9 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 				}
 			}
 		}
+
+		/* BYWJY: to support the multibyte characters */
+		for (int g = Character.toString(ch).getBytes().length - Character.toString(ch).length(); g > 0; g--) length--;
 	}
 
 	private void readValue(boolean ignorePadding) {
